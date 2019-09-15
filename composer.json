@@ -1,5 +1,5 @@
 {
-    "name": "cts_team/webrover",
+    "name": "webrover/framework",
     "type": "framework",
     "description": "A Fast PHP Framework",
     "keywords": ["php","framework"],

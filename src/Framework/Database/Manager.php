@@ -64,17 +64,21 @@ class Manager
     public function getConnection($connectionName = null)
     {
         if (is_null($connectionName)) {
-            $connection = $this->getDefaultConnection();
-        } else {
-            $connection = $this->links[$connectionName];
+            $connectionName = $this->getDefaultConnectionName();
         }
 
-        return $connection;
+        if (!isset($this->links[$connectionName])) {
+            $connections = $this->params['connections'];
+
+            $this->addConnection($connections[$connectionName], $connectionName);
+        }
+
+        return $this->links[$connectionName];
     }
 
     public function getDefaultConnection()
     {
-        return $this->links['default'];
+        return $this->getConnection();
     }
 
     /**

@@ -4,43 +4,50 @@
 namespace WebRover\Framework\Cache;
 
 
-use WebRover\Framework\Cache\Builder\Builder;
-use WebRover\Framework\Cache\Builder\TagBuilder;
-
-class Cache
+/**
+ * Class Cache
+ * @package WebRover\Framework\Cache
+ */
+class Cache implements CacheInterface
 {
-    use TagTrait;
-
     private $manager;
 
     public function __construct(Manager $manager)
     {
         $this->manager = $manager;
-
-        $this->builder = $this->getTag();
-    }
-
-    public function store($name = null)
-    {
-        $store = $this->manager->getStore($name);
-
-        return new TagBuilder($store);
-    }
-
-    public function tag($tags)
-    {
-        $store = $this->manager->getStore();
-        return new Tag($store, $tags);
     }
 
     /**
-     * @param null $storeName
-     * @return Builder
+     * @param null $name
+     * @return CacheInterface
      */
-    protected function getTag($storeName = null)
+    public function store($name = null)
     {
-        $store = $this->manager->getStore($storeName);
+        return $this->manager->getStore($name);
+    }
 
-        return new Builder($store);
+    public function has($key)
+    {
+        return $this->store()->has($key);
+    }
+
+    public function get($key, $default = null)
+    {
+        return $this->store()->get($key, $default);
+    }
+
+    public function set($key, $value, $ttl = 0)
+    {
+        return $this->store()->set($key, $value, $ttl);
+    }
+
+    public function delete($key)
+    {
+        return $this->store()->delete($key);
+    }
+
+    public function clear()
+    {
+        return $this->store()->clear();
     }
 }

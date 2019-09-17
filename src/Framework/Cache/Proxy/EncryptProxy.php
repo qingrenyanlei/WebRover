@@ -4,10 +4,12 @@
 namespace WebRover\Framework\Cache\Proxy;
 
 
-use Psr\Cache\CacheItemInterface;
-use WebRover\Framework\Security\DecryptException;
 use WebRover\Framework\Security\Encryption;
 
+/**
+ * Class EncryptProxy
+ * @package WebRover\Framework\Cache\Proxy
+ */
 class EncryptProxy extends AbstractProxy
 {
     private $encryption;
@@ -17,57 +19,51 @@ class EncryptProxy extends AbstractProxy
         $this->encryption = $encryption;
     }
 
-    public function getItem($key)
+    public function set($key, $value, $ttl = 0)
     {
-        $item = parent::getItem($key);
-
-        if ($item) {
-            $value = $item->get();
-
-            if ($value) {
-                try {
-                    $this->encryption->decryptString($value);
-                } catch (DecryptException $exception) {
-                }
+        if (is_array($key)) {
+            foreach ($key as $k => &$v) {
+                $v = $this->encryption->encrypt($v);
             }
+        } else {
+            $value = $this->encryption->encrypt($value);
         }
-        $item->set($value);
 
-        return $item;
+        return parent::set($key, $value, $ttl);
     }
 
-    public function getItems(array $keys = [])
+    public function get($key, $default = null)
     {
-        $items = parent::getItems($keys);
+        $data = parent::get($key, $default);
 
-        foreach ($keys as $key) {
-            if (!isset($items[$key])) {
+        if (!$data) return $data;
+
+        if (!is_array($key)) {
+            $data = [$data];
+        }
+
+        $result = [];
+
+        foreach ($data as $k => $v) {
+            if (!$data[$k] || $data[$k] === $default) {
+                $result[$k] = $data[$k];
                 continue;
             }
 
-            $item = $items[$key];
+            try {
+                $decrypt = $this->encryption->decrypt($data[$k]);
 
-            $value = $item->get();
-
-            if ($value) {
-                try {
-                    $value = $this->encryption->decryptString($value);
-                } catch (DecryptException $exception) {
-                }
+                if ($decrypt) $data[$k] = $decrypt;
+            } catch (\Exception $exception) {
             }
-            $item->set($value);
 
-            $items[$key] = $item;
+            $result[$k] = $data[$k];
         }
 
-        return $items;
-    }
+        if (!is_array($key)) {
+            return $result[0];
+        }
 
-    public function save(CacheItemInterface $item)
-    {
-        $value = $this->encryption->encrypt($item->get());
-
-        $item->set($value);
-        return parent::save($item);
+        return $result;
     }
 }

@@ -23,7 +23,6 @@ abstract class Model
 
     protected $table;
 
-
     /**
      * @return string
      */

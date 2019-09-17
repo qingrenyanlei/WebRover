@@ -3,8 +3,6 @@
 
 namespace WebRover\Framework\Cache;
 
-
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use WebRover\Framework\Cache\Proxy\ProxyInterface;
 use WebRover\Framework\Database\Manager as DatabaseManager;
 
@@ -14,6 +12,9 @@ use WebRover\Framework\Database\Manager as DatabaseManager;
  */
 class Manager
 {
+    /**
+     * @var \Psr\SimpleCache\CacheInterface[]
+     */
     private $stores = [];
 
     private $proxy;
@@ -48,9 +49,11 @@ class Manager
         $store = $this->stores[$name];
 
         if (!is_null($this->proxy)) {
-            ($this->proxy)::setStore($store);
 
-            return $this->proxy;
+            $proxy = clone $this->proxy;
+            $proxy::setStore($store);
+
+            return $proxy;
         }
 
         return $store;
@@ -83,6 +86,6 @@ class Manager
 
         $store->connect($params);
 
-        return new TagAwareAdapter($store);
+        return $store;
     }
 }

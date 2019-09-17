@@ -4,7 +4,7 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-use Symfony\Component\Cache\Adapter\PdoAdapter;
+use Symfony\Component\Cache\Simple\PdoCache;
 
 /**
  * Class PdoStore
@@ -12,14 +12,12 @@ use Symfony\Component\Cache\Adapter\PdoAdapter;
  */
 class PdoStore extends AbstractStore
 {
-    public function connect(array $params)
+    public function connect(array $params = [])
     {
         $connection = $params['connection'];
 
         $options = isset($params['options']) ? $params['options'] : [];
 
-        $this->instance = new PdoAdapter($connection, '', 0, $options);
-
-        return $this;
+        $this->instance = new PdoCache($connection, '', 0, $options);
     }
 }

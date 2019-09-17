@@ -4,7 +4,7 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Simple\RedisCache;
 
 /**
  * Class RedisStore
@@ -12,16 +12,14 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
  */
 class RedisStore extends AbstractStore
 {
-    public function connect(array $params)
+    public function connect(array $params = [])
     {
         $dsn = $params['dsn'];
 
         $options = isset($params['options']) ? $params['options'] : [];
 
-        $client = RedisAdapter::createConnection($dsn, $options);
+        $client = RedisCache::createConnection($dsn, $options);
 
-        $this->instance = new RedisAdapter($client);
-
-        return $this;
+        $this->instance = new RedisCache($client);
     }
 }

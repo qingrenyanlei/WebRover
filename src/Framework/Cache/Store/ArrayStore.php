@@ -4,16 +4,16 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-use Symfony\Component\Cache\Simple\ApcuCache;
+use Symfony\Component\Cache\Simple\ArrayCache;
 
 /**
- * Class ApcuStore
+ * Class ArrayStore
  * @package WebRover\Framework\Cache\Store
  */
-class ApcuStore extends AbstractStore
+class ArrayStore extends AbstractStore
 {
     public function connect(array $params = [])
     {
-        $this->instance = new ApcuCache();
+        $this->instance = new ArrayCache();
     }
 }

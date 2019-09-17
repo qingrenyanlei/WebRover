@@ -4,14 +4,10 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-/**
- * Interface StoreInterface
- * @package WebRover\Framework\Cache\Store
- */
-interface StoreInterface
+use Psr\SimpleCache\CacheInterface as SimpleCacheInterface;
+use WebRover\Framework\Cache\CacheInterface;
+
+interface StoreInterface extends CacheInterface, SimpleCacheInterface
 {
-    /**
-     * @param array $params
-     */
-    public function connect(array $params);
+    public function connect(array $params = []);
 }

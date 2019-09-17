@@ -4,7 +4,7 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Simple\MemcachedCache;
 
 /**
  * Class MemcachedStore
@@ -12,16 +12,14 @@ use Symfony\Component\Cache\Adapter\MemcachedAdapter;
  */
 class MemcachedStore extends AbstractStore
 {
-    public function connect(array $params)
+    public function connect(array $params = [])
     {
         $servers = $params['servers'];
 
         $options = isset($params['options']) ? $params['options'] : [];
 
-        $client = MemcachedAdapter::createConnection($servers, $options);
+        $client = MemcachedCache::createConnection($servers, $options);
 
-        $this->instance = new MemcachedAdapter($client);
-
-        return $this;
+        $this->instance = new MemcachedCache($client);
     }
 }

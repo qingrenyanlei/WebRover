@@ -4,58 +4,64 @@
 namespace WebRover\Framework\Cache\Store;
 
 
-use Psr\Cache\CacheItemInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\SimpleCache\CacheInterface;
 
-abstract class AbstractStore implements AdapterInterface,StoreInterface
+abstract class AbstractStore implements StoreInterface
 {
     /**
-     * @var AdapterInterface
+     * @var CacheInterface
      */
     protected $instance;
 
-    public function commit()
+    public function has($key)
     {
-        return $this->instance->commit();
+        return $this->instance->has($key);
     }
 
-    public function hasItem($key)
+    public function get($key, $default = null)
     {
-        return $this->instance->hasItem($key);
+        if (is_array($key)) {
+            return $this->getMultiple($key, $default);
+        }
+
+        return $this->instance->get($key, $default);
     }
 
-    public function deleteItem($key)
+    public function getMultiple($keys, $default = null)
     {
-        return $this->instance->deleteItem($key);
+        return $this->instance->getMultiple($keys, $default);
     }
 
-    public function deleteItems(array $keys)
+    public function set($key, $value, $ttl = 0)
     {
-        return $this->instance->deleteItems($keys);
+        if (is_array($key)) {
+            return $this->setMultiple($key, $value);
+        }
+
+        return $this->instance->set($key, $value, $ttl);
+    }
+
+    public function setMultiple($values, $ttl = null)
+    {
+        return $this->instance->setMultiple($values, $ttl);
+    }
+
+    public function delete($key)
+    {
+        if (is_array($key)) {
+            return $this->deleteMultiple($key);
+        }
+
+        return $this->instance->delete($key);
+    }
+
+    public function deleteMultiple($keys)
+    {
+        return $this->instance->deleteMultiple($keys);
     }
 
     public function clear()
     {
         return $this->instance->clear();
-    }
-
-    public function save(CacheItemInterface $item)
-    {
-        return $this->instance->save($item);
-    }
-
-    public function saveDeferred(CacheItemInterface $item)
-    {
-        return $this->instance->saveDeferred($item);
-    }
-
-    public function getItem($key)
-    {
-        return $this->instance->getItem($key);
-    }
-
-    public function getItems(array $keys = [])
-    {
-        return $this->instance->getItems($keys);
     }
 }

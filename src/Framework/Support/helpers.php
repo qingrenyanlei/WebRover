@@ -122,10 +122,10 @@ if (!function_exists('cache')) {
     /**
      * @param $key
      * @param string $value
-     * @param int $ttl
+     * @param int|null $ttl
      * @return mixed
      */
-    function cache($key, $value = '', $ttl = 0)
+    function cache($key, $value = '', $ttl = null)
     {
         $cache = app()->make('cache');
 

@@ -53,7 +53,7 @@ class EncryptProxy extends AbstractProxy
             try {
                 $decrypt = $this->encryption->decrypt($data[$k]);
 
-                if ($decrypt) $data[$k] = $decrypt;
+                $data[$k] = $decrypt;
             } catch (\Exception $exception) {
             }
 

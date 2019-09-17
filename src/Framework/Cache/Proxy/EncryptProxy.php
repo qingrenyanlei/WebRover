@@ -19,7 +19,7 @@ class EncryptProxy extends AbstractProxy
         $this->encryption = $encryption;
     }
 
-    public function set($key, $value, $ttl = 0)
+    public function set($key, $value, $ttl = null)
     {
         if (is_array($key)) {
             foreach ($key as $k => &$v) {

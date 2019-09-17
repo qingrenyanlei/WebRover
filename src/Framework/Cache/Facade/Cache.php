@@ -13,7 +13,7 @@ use WebRover\Framework\Kernel\Facade\AbstractFacade;
  * @mixin \WebRover\Framework\Cache\Cache
  * @method CacheInterface store($name = null) static
  * @method bool has($key) static
- * @method bool set($key, $value, $ttl = 0) static
+ * @method bool set($key, $value, $ttl = null) static
  * @method mixed get($key, $default = null) static
  * @method bool delete($key) static
  * @method bool clear() static

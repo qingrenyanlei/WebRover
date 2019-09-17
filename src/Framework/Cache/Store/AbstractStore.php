@@ -32,7 +32,7 @@ abstract class AbstractStore implements StoreInterface
         return $this->instance->getMultiple($keys, $default);
     }
 
-    public function set($key, $value, $ttl = 0)
+    public function set($key, $value, $ttl = null)
     {
         if (is_array($key)) {
             return $this->setMultiple($key, $value);

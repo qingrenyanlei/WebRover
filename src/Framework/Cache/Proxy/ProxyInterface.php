@@ -15,7 +15,7 @@ interface ProxyInterface extends CacheInterface
 {
     public static function setStore(SimpleCacheInterface $store);
 
-    public function set($key, $value, $ttl = 0);
+    public function set($key, $value, $ttl = null);
 
     public function get($key, $default = null);
 

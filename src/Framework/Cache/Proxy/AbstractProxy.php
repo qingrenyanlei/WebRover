@@ -32,7 +32,7 @@ abstract class AbstractProxy implements ProxyInterface
         return static::$store->get($key, $default);
     }
 
-    public function set($key, $value, $ttl = 0)
+    public function set($key, $value, $ttl = null)
     {
         return static::$store->set($key, $value, $ttl);
     }

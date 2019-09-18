@@ -35,7 +35,7 @@ class Encryption
 
         $iv = random_bytes(16);
 
-        $this->aes->iv = $iv;
+        $this->aes->setIV($iv);
         $value = $this->aes->encrypt($serialize ? serialize($value) : $value);
 
         if ($value === false) {
@@ -82,7 +82,7 @@ class Encryption
         // Here we will decrypt the value. If we are able to successfully decrypt it
         // we will then unserialize it and return it out to the caller. If we are
         // unable to decrypt this value we will throw out an exception message.
-        $this->aes->iv = $iv;
+        $this->aes->setIV($iv);
 
         $decrypted = $this->aes->decrypt(base64_decode($payload['value']));
 

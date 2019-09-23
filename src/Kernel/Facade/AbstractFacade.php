@@ -4,7 +4,7 @@
 namespace WebRover\Framework\Kernel\Facade;
 
 
-use WebRover\Framework\Kernel\Container\Container;
+use WebRover\Framework\Container\Container;
 
 /**
  * Class AbstractFacade
